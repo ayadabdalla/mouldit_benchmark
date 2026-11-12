@@ -1,0 +1,14 @@
+# environments and installs
+.venv/
+*.egg-info/
+/build/
+__pycache__/
+
+# data (downloaded) and outputs
+/data/
+/results/
+wandb/
+*.log
+
+# editors
+.vscode/

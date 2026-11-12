@@ -1,0 +1,20 @@
+# MouldIt encoder and decoder (paper Fig. 5): two TCN blocks and temporal attention around a dense
+# bottleneck.  The TCN blocks keep the sequence length, so the flattened size is 32 * seq_len.
+
+derived:
+  flat_dim: "${32 * seq_len}"
+
+encoder:
+  - {type: tcn, in_channels: "${n_channels}", out_channels: 16, kernel_size: 3, dilation: 1, norm: true}
+  - {type: tcn, in_channels: 16, out_channels: 32, kernel_size: 3, dilation: 2, norm: true}
+  - {type: attention, hidden_dim: 32}
+  - {type: flatten}
+  - {type: linear, in_features: "${flat_dim}", out_features: 512, norm: true}
+
+decoder:
+  - {type: linear, in_features: "${code}", out_features: 512, norm: true}
+  - {type: linear, in_features: 512, out_features: "${flat_dim}", norm: true}
+  - {type: attention, hidden_dim: 32, seq_len: "${seq_len}"}
+  - {type: tcn, in_channels: 32, out_channels: 32, kernel_size: 3, dilation: 2, norm: true}
+  - {type: tcn, in_channels: 32, out_channels: 16, kernel_size: 3, dilation: 1, norm: true}
+  - {type: conv1d, in_channels: 16, out_channels: "${n_channels}", kernel_size: 1}

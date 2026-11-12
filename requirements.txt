@@ -1,0 +1,10 @@
+# The versions the paper's results were produced with (Python 3.12, CUDA 12.4).
+numpy==2.2.3
+pandas==2.2.3
+scikit-learn==1.6.1
+scipy==1.15.2
+torch==2.6.0
+matplotlib==3.10.0
+omegaconf==2.3.0
+PyYAML==6.0.2
+wandb==0.19.6
